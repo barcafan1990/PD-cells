@@ -1,0 +1,8 @@
+{
+  // ========== PrizmDoc Cloud (Accusoft-hosted PrizmDoc Cells Server) ==========
+  "cellsServerBaseUrl": "https://api.accusoft.com/cells",
+  "apiKey": "YOUR_API_KEY", // Get an API key for free at https://cloud.accusoft.com
+
+  // ========== Self-hosted ==========
+  //"cellsServerBaseUrl": "YOUR_CELLS_SERVER_BASE_URL"
+}

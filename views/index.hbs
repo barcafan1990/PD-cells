@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello PrizmDoc Cells!</title>
+
+    <!-- Ensures the WorkbookControl works best across various browsers and devices -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1 user-scalable=no"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- CSS for this web application -->
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <!-- Make the Accusoft.WorkbookControl API available -->
+    <script src="/cells-server-proxy/interface.js"></script>
+
+    <!-- Create a WorkbookControl inside of the "workbookContainer" div, initialized with a sessionId -->
+    <script type="text/javascript">
+      window.onload = function () {
+        const workbookControl = new Accusoft.WorkbookControl({
+          baseUrl: 'cells-server-proxy',
+          sessionId: "{{sessionId}}"
+        });
+
+        workbookControl.embed({
+          container: document.getElementById('workbook-container')
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Hello PrizmDoc Cells!</h1>
+
+    <p>This is a minimal node.js express application which loads a workbook in the browser with PrizmDoc Cells, like this:</p>
+
+    <!-- This div will be where the WorkbookControl is placed -->
+    <div id="workbook-container" style="width: 80%; height: 60%;"></div>
+
+    <h2>What Just Happened?</h2>
+
+   <ol>
+    <li>
+      <p>
+        This web application uploaded the XLSX file to the PrizmDoc Cells Server:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/1-post-workbook.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        The PrizmDoc Cells Server returned a <code>workbookId</code>:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/2-receive-workbook-id.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        An XLSX file only needs to be uploaded to the PrizmDoc Cells Server
+        once. Once uploaded, the returned <code>workbookId</code> can be used
+        repeatedly to create a temporary <i>session</i> for an end user to view
+        the workbook.
+      </p>
+      <p>
+        So, next, this web application <code>POST</code>ed to the PrizmDoc Cells
+        Server to create a new <i>session</i>:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/3-post-session.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        The PrizmDoc Cells Server returned a new <code>sessionId</code> of <code
+        style="font-weight: bold">"{{cellsSessionId}}"</code>.
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/4-receive-session-id.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        This web application rendered the HTML for this page, including the
+        <i>Workbook Control</i> initialized with the <code>sessionId</code>.
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/5-render-html.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        The <i>Workbook Control</i> asked the PrizmDoc Cells Server for the initial
+        sheet data:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/6-control-requests-initial-data.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        The PrizmDoc Cells Server returned the initial sheet data to the
+        Workbook Control, allowing you to see the initial sheet in the workbook:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/7-control-receives-initial-data.png" width="960" /></p>
+    </li>
+    <li>
+      <p>
+        As you change sheets, the Workbook Control will request sheet data as
+        needed:
+      </p>
+      <p><img src="/images/cells-sequence-diagrams/8-control-requests.png" width="960" /></p>
+    </li>
+    </ol>
+
+    <h2>How Does the Workbook Control Reach the PrizmDoc Cells Server?</h2>
+
+    <p>
+      To get workbook data, the Workbook Control makes requests to the PrizmDoc
+      Cells Server <i>through your web application</i> (or web server). That's
+      why this web application defines a proxy route to PrizmDoc Cells at
+      <code>cells-server-proxy/</code> (see <code>app.js</code> and
+      <code>cells/createProxyRouteToCellsServer.js</code>). If you look at the
+      network traffic in dev tools, you'll see the requests made by the Workbook
+      Control for resources rooted at this path.
+    </p>
+
+
+    <h2>Where to Next?</h2>
+
+    <p>Check out the <a href="https://api.accusoft.com/cells/docs/">PrizmDoc Cells product documentation</a>.</p>
+
+    <p>Still need help? Contact <a href="https://www.accusoft.com/support">Accusoft Support</a>.</p>
+
+    <br />
+  </body>
+</html>
